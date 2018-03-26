@@ -35,12 +35,18 @@ class Client extends Component {
   handleSearch() {
     var githubName = document.getElementById('github-name-input').value;
 
+    console.log("searching for: " + githubName)
+
     if (!githubName) return;
 
-    fetch('https://fcc-profile-scraper.herokuapp.com/users/' + githubName)
-      .then(res => res.json())
+    fetch('https://fcc-profile-scraper.herokuapp.com/user/' + githubName)
+      //console.log("Fetching") Adding this console log gives CORs error?????
+
+      .then(res => res.json())//Here is the problem, not right endpoint?
+      //console.log(res)
       .then((user_info) => {
         this.setState({ user_info });
+        console.log(user_info);
       });
   }
 
@@ -57,7 +63,6 @@ class Client extends Component {
   }
 
 }
-//TODO: index.js was needed, see if we need to route it to client.js
 //TODO: start working on search feature that uses scraper on this client.js
 
 export default Client;
