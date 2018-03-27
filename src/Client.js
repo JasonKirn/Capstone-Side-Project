@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 //import ReactDOM from 'react-dom';
 import './client.css';
+import UserTable from './UserTable';
 
 //Making request from React
 //Make ajax call in app.js
@@ -17,7 +18,7 @@ function DisplayUserInfo(props) {
        );
      } else {
         return (
-          <div>props.user_info.name doesn't exist  </div>
+          <div></div>
         );
      }
 }
@@ -40,10 +41,7 @@ class Client extends Component {
     if (!githubName) return;
 
     fetch('https://fcc-profile-scraper.herokuapp.com/user/' + githubName)
-      //console.log("Fetching") Adding this console log gives CORs error?????
-
-      .then(res => res.json())//Here is the problem, not right endpoint?
-      //console.log(res)
+      .then(res => res.json())
       .then((user_info) => {
         this.setState({ user_info });
         console.log(user_info);
@@ -53,16 +51,19 @@ class Client extends Component {
   render() {
     return (
       <div className="Client">
-        <h1>testing</h1>
+        <h1>FreeCodeCamp Profile Page</h1>
         <input type="text" id="github-name-input"></input>
         <button onClick={this.handleSearch.bind(this)}>Search</button>
         <DisplayUserInfo user_info={this.state.user_info}/>
+        <UserTable students={this.state.students} errors={this.state.errors}/>
       </div>
 
     );
   }
 
 }
-//TODO: start working on search feature that uses scraper on this client.js
-
+//TODO: When passing props, don't pass props if it's a bad user error (not found)
+//Ideas: Could use errors
+//Check status code
+//In JSON, "error" has value when user doesn't exist.
 export default Client;
