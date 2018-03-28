@@ -62,6 +62,8 @@ class Client extends Component {
   }
 
 }
+//Think about: Does UserTable need user_info or students or both?
+
 //TODO: When passing props, don't pass props if it's a bad user error (not found)
 //Ideas: Could use errors
 //Check status code
