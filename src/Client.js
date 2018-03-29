@@ -6,64 +6,57 @@ import UserTable from './UserTable';
 //Making request from React
 //Make ajax call in app.js
 //npm start
-function DisplayUserInfo(props) {
-     if (props.user_info.name) {
-       console.log("props.user_info.name exists");
-       return (
-         <div>
-           <div> {props.user_info.name} </div>
-           <div> {props.user_info.completedChallenges.length} challenges completed</div>
-         </div>
-
-       );
-     } else {
-        return (
-          <div></div>
-        );
-     }
-}
 
 class Client extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      students: [],
-      errors: [],
-      user_info: {}
+      searchValue: '',
+      students: []
     };
+
+    //binding of 'this' to make 'this' accessible in render's form. Equivalent to putting
+    //.bind(this) after function call in render()
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleSearch() {
-    var githubName = document.getElementById('github-name-input').value;
+  handleSearch(e) {
+    e.preventDefault()
 
-    console.log("searching for: " + githubName)
+    let githubName = this.state.searchValue;
+    console.log(githubName)
 
-    if (!githubName) return;
-
+    //ajax call
     fetch('https://fcc-profile-scraper.herokuapp.com/user/' + githubName)
-      .then(res => res.json())
-      .then((user_info) => {
-        this.setState({ user_info });
-        console.log(user_info);
-      });
+      .then(res => res.json())//  Can we add a .then block for filling in students or do it inside second then?
+      .then(function(student) {//everytime we search, update students state by pushing a new object(the JSON data) into students
+        let students = this.state.students;
+        students.push(student);
+        this.setState({ students });
+        console.log(this.state.students)
+      }.bind(this));
+  }
+
+  handleChange(e) {
+    this.setState({searchValue: e.target.value});
   }
 
   render() {
     return (
       <div className="Client">
         <h1>FreeCodeCamp Profile Page</h1>
-        <input type="text" id="github-name-input"></input>
-        <button onClick={this.handleSearch.bind(this)}>Search</button>
-        <DisplayUserInfo user_info={this.state.user_info}/>
-        <UserTable students={this.state.students} errors={this.state.errors}/>
+        <form onSubmit={this.handleSearch}>
+          Search: <input type="text" value={this.state.searchValue} onChange={this.handleChange} />
+          <input type="submit" value="Submit" />
+        </form>
+
       </div>
 
     );
   }
 
 }
-//Think about: Does UserTable need user_info or students or both?
-
 //TODO: When passing props, don't pass props if it's a bad user error (not found)
 //Ideas: Could use errors
 //Check status code
