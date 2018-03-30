@@ -29,12 +29,19 @@ class Client extends Component {
 
     //ajax call
     fetch('https://fcc-profile-scraper.herokuapp.com/user/' + githubName)
-      .then(res => res.json())//  Can we add a .then block for filling in students or do it inside second then?
+      .then(res => res.json())
       .then(function(student) {//everytime we search, update students state by pushing a new object(the JSON data) into students
         let students = this.state.students;
-        students.push(student);
-        this.setState({ students });
-        console.log(this.state.students)
+
+        if (student.error == undefined) {
+          students.push(student);
+          this.setState({ students });
+          console.log(this.state.students)
+        }
+        else {
+          console.log("User not added since user doesn't exist")
+        }
+
       }.bind(this));
   }
 
@@ -50,7 +57,7 @@ class Client extends Component {
           Search: <input type="text" value={this.state.searchValue} onChange={this.handleChange} />
           <input type="submit" value="Submit" />
         </form>
-
+        <UserTable students={this.state.students}/>
       </div>
 
     );

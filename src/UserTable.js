@@ -3,17 +3,29 @@ import UserRow from './UserRow';
 import './UserTable.css';
 
 class UserTable extends Component {
+  constructor(props) {
+    super(props);
+
+    //Not needed because of arrow syntax handling .bind(this)?
+    //this.populateRows = this.populateRows.bind(this);
+    //this.showTable = this.showTable.bind(this);
+  }
 
   populateRows() {
     let rows = [];
+    //console.log("hi")
     this.props.students.forEach((student, index) => {
+      //console.log(student.name)
+      //console.log(student.completedChallenges.length)
       rows.push((
+
         <UserRow key={index}
             name={student.name}
-            challengesCompleted={student.completedChallenges}
+            challengesCompleted={student.completedChallenges.length}
         />
       ));
     });
+    //console.log("bye")
 
     return rows;
   }
@@ -36,9 +48,10 @@ class UserTable extends Component {
 
   render() {
     const isStudentListEmpty = this.props.students.length === 0;
+    //console.log("Student list size" + this.props.students.length)
     return (
       <div className= "UserTable">
-        {this.showTable()}
+        {isStudentListEmpty ? <div></div> : this.showTable()}
       </div>
     );
   }
