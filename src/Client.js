@@ -19,6 +19,7 @@ class Client extends Component {
     //.bind(this) after function call in render()
     this.handleSearch = this.handleSearch.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleRemoveButtonPress = this.handleRemoveButtonPress.bind(this);
   }
 
   handleSearch(e) {
@@ -49,23 +50,34 @@ class Client extends Component {
     this.setState({searchValue: e.target.value});
   }
 
+  //We're going to have to pass one of or both of these functions as a prop to table
+  handleRemoveButtonPress(index) {
+    //remove from index position in here
+    console.log("button pressed - from parent")
+  }
+
+  renderButton() {
+    return (
+      <button>MyButton</button>
+
+    );
+  }
+
   render() {
     return (
       <div className="Client">
         <h1>FreeCodeCamp Profile Page</h1>
+        {this.renderButton()}
         <form onSubmit={this.handleSearch}>
           Search: <input type="text" value={this.state.searchValue} onChange={this.handleChange} />
           <input type="submit" value="Submit" />
         </form>
-        <UserTable students={this.state.students}/>
+        <UserTable removeStudent={this.handleRemoveButtonPress} students={this.state.students}/>
       </div>
 
     );
   }
 
 }
-//TODO: When passing props, don't pass props if it's a bad user error (not found)
-//Ideas: Could use errors
-//Check status code
-//In JSON, "error" has value when user doesn't exist.
+
 export default Client;

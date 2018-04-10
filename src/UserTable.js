@@ -22,6 +22,8 @@ class UserTable extends Component {
         <UserRow key={index}
             name={student.name}
             challengesCompleted={student.completedChallenges.length}
+            handleRemoveButtonPress={this.props.removeStudent}
+            studentIndex={index}
         />
       ));
     });
@@ -46,11 +48,16 @@ class UserTable extends Component {
     );
   }
 
+
   render() {
-    const isStudentListEmpty = this.props.students.length === 0;
+    const studentCount = this.props.students.length
+    const isStudentListEmpty = studentCount === 0;
     //console.log("Student list size" + this.props.students.length)
+
     return (
+
       <div className= "UserTable">
+        {isStudentListEmpty ? <div></div> : <div>Displaying {studentCount} student(s)</div>}
         {isStudentListEmpty ? <div></div> : this.showTable()}
       </div>
     );

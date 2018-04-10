@@ -6,6 +6,7 @@ class UserRow extends Component {
       <tr>
         <td>{this.props.name}</td>
         <td>{this.props.challengesCompleted}</td>
+        <td><button onClick={ () => {this.props.handleRemoveButtonPress(this.props.studentIndex)} }>Remove</button></td>
       </tr>
     );
   }
